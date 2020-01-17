@@ -39,4 +39,7 @@ dependencies {
     def archLifecycleVersion = '1.1.1'
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
+
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

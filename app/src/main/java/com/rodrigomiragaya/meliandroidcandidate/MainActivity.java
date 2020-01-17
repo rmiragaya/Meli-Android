@@ -1,15 +1,18 @@
 package com.rodrigomiragaya.meliandroidcandidate;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,13 +22,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rodrigomiragaya.meliandroidcandidate.Interface.MeliApi;
 import com.rodrigomiragaya.meliandroidcandidate.Obj.Producto;
 import com.rodrigomiragaya.meliandroidcandidate.Obj.Resultados;
-import com.rodrigomiragaya.meliandroidcandidate.Obj.VendorAddres;
-import com.rodrigomiragaya.meliandroidcandidate.Task.LoadResultados;
 import com.rodrigomiragaya.meliandroidcandidate.ViewModels.MainActivityVM;
 
 import java.util.ArrayList;
@@ -41,17 +43,26 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerAdapter.OnItemClickListener {
     private static final String TAG = "MainActivity";
     private static final String BASEURL = "https://api.mercadolibre.com/sites/MLA/";
+    public static final String EXTRA_TITULO = "titulo_producto";
+    public static final String EXTRA_PRECIO = "precio_producto";
+    public static final String EXTRA_THUMBNAIL = "imagen_producto";
 
+
+    private ProgressBar progressBar;
     private MeliApi meliApi;
     private EditText buscarEditText;
     private ImageView buscarBtn;
 
     /* Recycler */
     private RecyclerAdapter adapter;
+    private RecyclerView recyclerView;
     private ArrayList<Producto> listaProductos = new ArrayList<>();
+
+    /* liveData */
+    private MainActivityVM mainActivityVM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +70,44 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.main_test);
 
+        progressBar = findViewById(R.id.progressBarId);
+
+        mainActivityVM = ViewModelProviders.of(this).get(MainActivityVM.class);
+
+        mainActivityVM.init();
+
+        mainActivityVM.getProductos().observe(this, new Observer<List<Producto>>() {
+            @Override
+            public void onChanged(List<Producto> productos) {
+
+                listaProductos = new ArrayList<>(productos);
+                adapter.updateData(listaProductos);
+            }
+        });
+
+        mainActivityVM.getIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean){
+                    mostrarProgressBar();
+                } else {
+                    ocultarProgessBar();
+//                    recyclerView.smoothScrollToPosition(mainActivityVM.getProductos().getValue().size()-1);
+                }
+            }
+        });
+
         buscarBtn = findViewById(R.id.buscarBtnId);
 
         buscarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 closeKeyboard();
-                buscar(buscarEditText.getText().toString());
+                adapter.clearData();
+                Log.d(TAG, "buscar " + buscarEditText.getText().toString());
+                mainActivityVM.search(buscarEditText.getText().toString());
+
+//                buscar(buscarEditText.getText().toString());
             }
         });
 
@@ -133,10 +175,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void initRecycler(){
         Log.d(TAG, "initRecycler: ");
-        adapter = new RecyclerAdapter(listaProductos);
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewLayout);
+        adapter = new RecyclerAdapter(this, listaProductos);
+        recyclerView = findViewById(R.id.recyclerViewLayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(MainActivity.this);
     }
 
     private void closeKeyboard() {
@@ -147,4 +191,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void mostrarProgressBar(){
+        if (progressBar.getVisibility() == View.INVISIBLE){
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void ocultarProgessBar(){
+        if (progressBar.getVisibility() == View.VISIBLE){
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent detalleProductoIntent = new Intent(this, DetallesProducto.class);
+        Producto productoSeleccionado = listaProductos.get(position);
+        detalleProductoIntent.putExtra(EXTRA_TITULO, productoSeleccionado.getTitulo());
+        detalleProductoIntent.putExtra(EXTRA_PRECIO, productoSeleccionado.getPrecio());
+        detalleProductoIntent.putExtra(EXTRA_THUMBNAIL, productoSeleccionado.getThumbnail());
+        startActivity(detalleProductoIntent);
+    }
 }

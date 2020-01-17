@@ -1,8 +1,11 @@
 package com.rodrigomiragaya.meliandroidcandidate.Obj;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Producto {
+public class Producto implements Parcelable {
 
     private String id;
 
@@ -20,6 +23,7 @@ public class Producto {
     @SerializedName("condition")
     private String estado;
 
+    @SerializedName("address")
     private VendorAddres vendorAddres;
 
     @SerializedName("accepts_mercadopago")
@@ -35,6 +39,34 @@ public class Producto {
         this.vendorAddres = vendorAddres;
         this.mercadopago = mercadopago;
     }
+
+
+    protected Producto(Parcel in) {
+        id = in.readString();
+        titulo = in.readString();
+        if (in.readByte() == 0) {
+            precio = null;
+        } else {
+            precio = in.readFloat();
+        }
+        stock = in.readInt();
+        thumbnail = in.readString();
+        estado = in.readString();
+        vendorAddres = in.readParcelable(VendorAddres.class.getClassLoader());
+        mercadopago = in.readByte() != 0;
+    }
+
+    public static final Creator<Producto> CREATOR = new Creator<Producto>() {
+        @Override
+        public Producto createFromParcel(Parcel in) {
+            return new Producto(in);
+        }
+
+        @Override
+        public Producto[] newArray(int size) {
+            return new Producto[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -98,5 +130,41 @@ public class Producto {
 
     public void setMercadopago(boolean mercadopago) {
         this.mercadopago = mercadopago;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" +
+                "id='" + id + '\'' +
+                ", titulo='" + titulo + '\'' +
+                ", precio=" + precio +
+                ", stock=" + stock +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", estado='" + estado + '\'' +
+                ", vendorAddres=" + vendorAddres +
+                ", mercadopago=" + mercadopago +
+                '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(titulo);
+        if (precio == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeFloat(precio);
+        }
+        parcel.writeInt(stock);
+        parcel.writeString(thumbnail);
+        parcel.writeString(estado);
+        parcel.writeParcelable(vendorAddres, i);
+        parcel.writeByte((byte) (mercadopago ? 1 : 0));
     }
 }

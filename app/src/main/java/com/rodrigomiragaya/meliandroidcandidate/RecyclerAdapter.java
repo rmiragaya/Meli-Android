@@ -1,7 +1,6 @@
 package com.rodrigomiragaya.meliandroidcandidate;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +15,12 @@ import com.rodrigomiragaya.meliandroidcandidate.Obj.Producto;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private static final String TAG = "RecyclerAdapter";
 
     private Context context;
-    private ArrayList<Producto> productoList = new ArrayList<>();
+    private ArrayList<Producto> productoList;
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener{

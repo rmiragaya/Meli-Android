@@ -1,13 +1,9 @@
 package com.rodrigomiragaya.meliandroidcandidate;
 
-import androidx.annotation.MainThread;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +15,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -27,18 +22,12 @@ import android.widget.TextView;
 
 import com.rodrigomiragaya.meliandroidcandidate.Interface.MeliApi;
 import com.rodrigomiragaya.meliandroidcandidate.Obj.Producto;
-import com.rodrigomiragaya.meliandroidcandidate.Obj.Resultados;
 import com.rodrigomiragaya.meliandroidcandidate.ViewModels.MainActivityVM;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -49,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
     public static final String EXTRA_TITULO = "titulo_producto";
     public static final String EXTRA_PRECIO = "precio_producto";
     public static final String EXTRA_THUMBNAIL = "imagen_producto";
+    public static final String DETALLE_PRODUCTO = "producto";
 
 
     private ProgressBar progressBar;
@@ -92,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
                     mostrarProgressBar();
                 } else {
                     ocultarProgessBar();
-//                    recyclerView.smoothScrollToPosition(mainActivityVM.getProductos().getValue().size()-1);
                 }
             }
         });
@@ -107,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
                 Log.d(TAG, "buscar " + buscarEditText.getText().toString());
                 mainActivityVM.search(buscarEditText.getText().toString());
 
-//                buscar(buscarEditText.getText().toString());
             }
         });
 
@@ -128,47 +116,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 
         meliApi = retrofit.create(MeliApi.class);
 
-
-        initRecycler();
-    }
-
-    public void buscar(String productoABuscar){
-        Call<Resultados> call = meliApi.getResultados(productoABuscar);
-
-        call.enqueue(new Callback<Resultados>() {
-            @Override
-            public void onResponse(Call<Resultados> call, Response<Resultados> response) {
-
-                if (!response.isSuccessful()){
-                    //todo mostrar error
-                    return;
-                }
-
-                Resultados resultados = response.body();
-                listaProductos = resultados.getProductoList();
-                adapter.updateData(listaProductos);
-
-
-                for (Producto producto : listaProductos){
-                    String content = "";
-                    content += "ID: " + producto.getId() + "\n";
-                    content += "Titulo: " + producto.getTitulo() + "\n";
-                    content += "Estado: " + producto.getEstado() + "\n";
-                    content += "Precio: " + producto.getPrecio().toString() + "\n\n";
-                    Log.d(TAG, "onResponse: " + content);
-//                    resultTextView.append(content);
-                }
-                Log.d(TAG, "onResponse: llama al adapternotify");
-
-
-            }
-
-            @Override
-            public void onFailure(Call<Resultados> call, Throwable t) {
-//                resultTextView.setText(t.getMessage());
-                //todo mostrar otro error
-            }
-        });
 
         initRecycler();
     }
@@ -207,9 +154,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
     public void onItemClick(int position) {
         Intent detalleProductoIntent = new Intent(this, DetallesProducto.class);
         Producto productoSeleccionado = listaProductos.get(position);
-        detalleProductoIntent.putExtra(EXTRA_TITULO, productoSeleccionado.getTitulo());
-        detalleProductoIntent.putExtra(EXTRA_PRECIO, productoSeleccionado.getPrecio());
-        detalleProductoIntent.putExtra(EXTRA_THUMBNAIL, productoSeleccionado.getThumbnail());
+        Log.d(TAG, "productoSeleccionado= " + productoSeleccionado.toString());
+        detalleProductoIntent.putExtra(DETALLE_PRODUCTO,productoSeleccionado);
         startActivity(detalleProductoIntent);
     }
 }

@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
     private MeliApi meliApi;
     private EditText buscarEditText;
     private ImageView buscarBtn;
+    private Button carro;
 
     /* Recycler */
     private RecyclerAdapter adapter;
@@ -118,6 +120,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 
 
         initRecycler();
+
+        carro = findViewById(R.id.carro);
+        carro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, CarroDeCompras.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     public void initRecycler(){

@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rodrigomiragaya.meliandroidcandidate.Obj.Producto;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
@@ -22,7 +24,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private Context context;
     private ArrayList<Producto> productoList;
     private OnItemClickListener mListener;
+    //for Proce Format
+    private NumberFormat formatter = new DecimalFormat("#,###");
 
+    /* interface for onclick on product in recyclerView */
     public interface OnItemClickListener{
         void onItemClick(int position);
     }
@@ -47,8 +52,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         Producto objetoCurrent = productoList.get(i);
         holder.tituloPublicacion.setText(objetoCurrent.getTitulo());
+        //for price format
         int b = Math.round(objetoCurrent.getPrecio());
-        holder.precio.setText( "$ " + b);
+        String numberPriceFormat = formatter.format(b);
+        holder.precio.setText( "$ " + numberPriceFormat);
         Picasso.get().load(objetoCurrent.getThumbnail()).fit().centerInside().placeholder(R.drawable.common_full_open_on_phone).into(holder.imagenProducto);
     }
 
@@ -81,15 +88,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     }
                 }
             });
-
         }
     }
 
+    /* update recycler */
     public void updateData(ArrayList<Producto> productoList){
         this.productoList = productoList;
         this.notifyDataSetChanged();
     }
 
+    /* clear recycler */
     public void clearData(){
         updateData(new ArrayList<Producto>());
     }

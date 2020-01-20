@@ -15,38 +15,26 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.rodrigomiragaya.meliandroidcandidate.Interface.MeliApi;
+import com.airbnb.lottie.LottieAnimationView;
 import com.rodrigomiragaya.meliandroidcandidate.Obj.Producto;
 import com.rodrigomiragaya.meliandroidcandidate.ViewModels.MainActivityVM;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-
 public class MainActivity extends AppCompatActivity implements RecyclerAdapter.OnItemClickListener {
     private static final String TAG = "MainActivity";
-    private static final String BASEURL = "https://api.mercadolibre.com/sites/MLA/";
-    public static final String EXTRA_TITULO = "titulo_producto";
-    public static final String EXTRA_PRECIO = "precio_producto";
-    public static final String EXTRA_THUMBNAIL = "imagen_producto";
     public static final String DETALLE_PRODUCTO = "producto";
 
 
-    private ProgressBar progressBar;
-    private MeliApi meliApi;
+    private LottieAnimationView buscando, sinResultados;
     private EditText buscarEditText;
-    private ImageView buscarBtn;
-    private Button carro;
+    private ImageView buscarBtn, carro;
 
     /* Recycler */
     private RecyclerAdapter adapter;
@@ -60,23 +48,34 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.main_test);
+        setContentView(R.layout.main);
 
-        progressBar = findViewById(R.id.progressBarId);
+        /* bindViews */
+        buscando = findViewById(R.id.buscandoLottie);
+        sinResultados = findViewById(R.id.sinResultados);
+        buscarBtn = findViewById(R.id.buscarBtnId);
+        carro = findViewById(R.id.carroBtn);
+        buscarEditText = findViewById(R.id.busquedaEditTextId);
 
+        /* Observable List */
         mainActivityVM = ViewModelProviders.of(this).get(MainActivityVM.class);
-
         mainActivityVM.init();
-
         mainActivityVM.getProductos().observe(this, new Observer<List<Producto>>() {
             @Override
             public void onChanged(List<Producto> productos) {
-
                 listaProductos = new ArrayList<>(productos);
+
+                /* if no results */
+                if (listaProductos.isEmpty()){
+                    showLottieSinResultados();
+                }
+
+                /* update list */
                 adapter.updateData(listaProductos);
             }
         });
 
+        /* Observable when load */
         mainActivityVM.getIsLoading().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -88,21 +87,19 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
             }
         });
 
-        buscarBtn = findViewById(R.id.buscarBtnId);
-
+        /* Search */
         buscarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                cerrarNoResultados();
                 closeKeyboard();
                 adapter.clearData();
                 Log.d(TAG, "buscar " + buscarEditText.getText().toString());
                 mainActivityVM.search(buscarEditText.getText().toString());
-
             }
         });
 
-        buscarEditText = findViewById(R.id.busquedaEditTextId);
-
+        /* "Enter" action del keyboard */
         buscarEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -111,25 +108,25 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
             }
         });
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASEURL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        meliApi = retrofit.create(MeliApi.class);
-
 
         initRecycler();
 
-        carro = findViewById(R.id.carro);
+        /* Carro de compras */
         carro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CarroDeCompras.class);
                 startActivity(intent);
-
             }
         });
+    }
+
+
+    /* Show Lottie when no results "https://github.com/airbnb/lottie-android" */
+    private void showLottieSinResultados(){
+        Toast.makeText(MainActivity.this, "No se encontraron Resultados", Toast.LENGTH_SHORT).show();
+        sinResultados.setVisibility(View.VISIBLE);
+        sinResultados.playAnimation();
     }
 
     public void initRecycler(){
@@ -142,6 +139,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
         adapter.setOnItemClickListener(MainActivity.this);
     }
 
+    private void cerrarNoResultados(){
+        if (sinResultados.getVisibility() == View.VISIBLE){
+            sinResultados.setVisibility(View.GONE);
+        }
+    }
+
     private void closeKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -151,17 +154,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
     }
 
     private void mostrarProgressBar(){
-        if (progressBar.getVisibility() == View.INVISIBLE){
-            progressBar.setVisibility(View.VISIBLE);
+        if (buscando.getVisibility() == View.INVISIBLE){
+            buscando.setVisibility(View.VISIBLE);
         }
     }
 
     private void ocultarProgessBar(){
-        if (progressBar.getVisibility() == View.VISIBLE){
-            progressBar.setVisibility(View.INVISIBLE);
+        if (buscando.getVisibility() == View.VISIBLE){
+            buscando.setVisibility(View.INVISIBLE);
         }
     }
 
+    /* callback of interface from RecyclerV */
     @Override
     public void onItemClick(int position) {
         Intent detalleProductoIntent = new Intent(this, DetallesProducto.class);

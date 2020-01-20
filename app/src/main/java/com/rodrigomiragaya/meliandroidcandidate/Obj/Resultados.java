@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+/** Object for api Retrofit Response */
 public class Resultados {
 
     @SerializedName("results")

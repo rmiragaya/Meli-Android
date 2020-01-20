@@ -1,13 +1,13 @@
 package com.rodrigomiragaya.meliandroidcandidate.Singl;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.rodrigomiragaya.meliandroidcandidate.Obj.Producto;
 
 import java.util.ArrayList;
-import java.util.List;
 
+
+/** Sigleton pattern for get and modify "Carro" from any activity in the future */
 public class CarroComprasSingleton {
     private static final String TAG = "CarroComprasSingleton";
 
@@ -36,6 +36,7 @@ public class CarroComprasSingleton {
         listaCarro.clear();
     }
 
+    //sum all the product on the cart
     public int sumarCuenta(){
         int suma= 0;
         for (Producto p: listaCarro){

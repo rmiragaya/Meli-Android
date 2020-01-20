@@ -16,9 +16,7 @@ import com.rodrigomiragaya.meliandroidcandidate.Singl.CarroComprasSingleton;
 import com.squareup.picasso.Picasso;
 
 import static com.rodrigomiragaya.meliandroidcandidate.MainActivity.DETALLE_PRODUCTO;
-import static com.rodrigomiragaya.meliandroidcandidate.MainActivity.EXTRA_PRECIO;
-import static com.rodrigomiragaya.meliandroidcandidate.MainActivity.EXTRA_THUMBNAIL;
-import static com.rodrigomiragaya.meliandroidcandidate.MainActivity.EXTRA_TITULO;
+
 
 public class DetallesProducto extends AppCompatActivity {
     private static final String TAG = "DetallesProducto";

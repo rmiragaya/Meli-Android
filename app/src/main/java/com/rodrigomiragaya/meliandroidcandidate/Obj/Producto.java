@@ -4,7 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-
+/**
+ *
+ * Object class of Productos
+ * Parcelable implemented to pass object from "MainActivity" to "DetalleProducto"
+ *
+ * */
 public class Producto implements Parcelable {
 
     private String id;
@@ -80,57 +85,25 @@ public class Producto implements Parcelable {
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
     public Float getPrecio() {
         return precio;
     }
 
-    public void setPrecio(Float precio) {
-        this.precio = precio;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
 
     public String getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
 
     public VendorAddres getVendorAddres() {
         return vendorAddres;
     }
 
-    public void setVendorAddres(VendorAddres vendorAddres) {
-        this.vendorAddres = vendorAddres;
-    }
 
     public boolean isMercadopago() {
         return mercadopago;
     }
 
-    public void setMercadopago(boolean mercadopago) {
-        this.mercadopago = mercadopago;
-    }
 
     @Override
     public String toString() {

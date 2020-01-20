@@ -40,17 +40,11 @@ public class VendorAddres implements Parcelable {
         return provincia;
     }
 
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
-    }
 
     public String getCiudadOBarrio() {
         return ciudadOBarrio;
     }
 
-    public void setCiudadOBarrio(String ciudadOBarrio) {
-        this.ciudadOBarrio = ciudadOBarrio;
-    }
 
     @Override
     public String toString() {

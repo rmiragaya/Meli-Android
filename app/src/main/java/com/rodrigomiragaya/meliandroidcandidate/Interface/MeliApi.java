@@ -13,6 +13,7 @@ public interface MeliApi {
 
     @GET("search")
     Call<Resultados> getResultados(
-            @Query("q") String busqueda
+            @Query("q") String busqueda,
+            @Query("category") String category
     );
 }

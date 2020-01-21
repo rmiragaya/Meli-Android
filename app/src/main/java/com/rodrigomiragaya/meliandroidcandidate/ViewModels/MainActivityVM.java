@@ -41,7 +41,7 @@ public class MainActivityVM extends ViewModel {
 
 
     //call Retrofit to update List of Products
-    public void search(final String busquedaNueva){
+    public void search(final String busquedaNueva, String categoria){
         mIsLoading.setValue(true);
         final MutableLiveData<List<Producto>> data = new MutableLiveData<>();
 
@@ -62,7 +62,7 @@ public class MainActivityVM extends ViewModel {
 
         MeliApi meliApi = retrofit.create(MeliApi.class);
 
-        Call<Resultados> call = meliApi.getResultados(busquedaNueva);
+        Call<Resultados> call = meliApi.getResultados(busquedaNueva, categoria);
 
         call.enqueue(new Callback<Resultados>() {
             @Override

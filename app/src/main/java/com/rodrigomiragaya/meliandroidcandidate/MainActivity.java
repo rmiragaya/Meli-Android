@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +46,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 
     /* liveData */
     private MainActivityVM mainActivityVM;
+
+    /* Buttons List */
+    private Button accVehiculos, animales, antiguedades, artesanias, automotores, bebes,
+            celulares, hobbies, computacion, consolas, camaras, delicatesen,
+            deportes, electrodomesticos, electronica, eventos, hogarJardin,
+            oficinas, inmuebles;
+    private ArrayList<Button> listaBtn = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +101,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
         buscarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (busquedaVacia()){
+                    buscarEditText.setError(Html.fromHtml("<font color='red'>Que desea?</font>"));
+                    return;
+                }
                 cerrarNoResultados();
                 closeKeyboard();
                 adapter.clearData();
                 Log.d(TAG, "buscar " + buscarEditText.getText().toString());
-                mainActivityVM.search(buscarEditText.getText().toString());
+                mainActivityVM.search(buscarEditText.getText().toString(), getCategoria());
             }
         });
 
@@ -119,6 +133,17 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
                 startActivity(intent);
             }
         });
+
+        viewsOnButtons();
+        addButtonsOnList();
+    }
+
+    private String getCategoria(){
+        return "MLA1367";
+    }
+
+    private boolean busquedaVacia(){
+        return  (buscarEditText.getText().toString().equalsIgnoreCase(""));
     }
 
 
@@ -173,5 +198,41 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
         Log.d(TAG, "productoSeleccionado= " + productoSeleccionado.toString());
         detalleProductoIntent.putExtra(DETALLE_PRODUCTO,productoSeleccionado);
         startActivity(detalleProductoIntent);
+    }
+
+    public void deselectAllButtonsMenos(View view){
+        for (Button b : listaBtn){
+            if (b.getId() == view.getId()){
+                return;
+            }
+            if (b.isSelected()){
+                marcarCategoria(b);
+            }
+        }
+        view.setSelected(true);
+    }
+
+    public void marcarCategoria(View view) {
+        if (view instanceof Button) {
+            Button b = (Button) view;
+            if (b.isSelected()) {
+                b.setTextColor(getResources().getColor(R.color.grey_40));
+            } else {
+                b.setTextColor(Color.WHITE);
+            }
+            b.setSelected(!b.isSelected());
+        }
+    }
+
+    private void viewsOnButtons(){
+        accVehiculos = findViewById(R.id.accVehiculos);animales = findViewById(R.id.animales);antiguedades = findViewById(R.id.antiguedades);artesanias = findViewById(R.id.artesanias);
+    }
+
+    private void addButtonsOnList(){
+        listaBtn.add(accVehiculos);
+        listaBtn.add(animales);listaBtn.add(antiguedades);listaBtn.add(artesanias);
+//        listaBtn.add(automotores);listaBtn.add(bebes);
+//        listaBtn.add(celulares);listaBtn.add(hobbies);listaBtn.add(computacion);listaBtn.add(consolas);listaBtn.add(camaras);listaBtn.add(delicatesen);
+//        listaBtn.add(deportes);listaBtn.add(electrodomesticos);listaBtn.add(electronica);listaBtn.add(eventos);listaBtn.add(hogarJardin);listaBtn.add(oficinas);listaBtn.add(inmuebles);
     }
 }

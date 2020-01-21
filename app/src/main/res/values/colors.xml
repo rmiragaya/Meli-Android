@@ -6,5 +6,8 @@
     <color name="blanco">#FFFFFF</color>
     <color name="gris">#263238</color>
     <color name="grey_40">#999999</color>
+    <color name="unselected_selectable_text_bg">#EAEAEB</color>
+    <color name="title">#3F4A58</color>
+    <color name="amarillo">#F5C32C</color>
 
 </resources>

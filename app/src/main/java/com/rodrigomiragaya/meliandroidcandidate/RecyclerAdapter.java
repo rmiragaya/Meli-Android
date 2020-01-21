@@ -24,7 +24,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private Context context;
     private ArrayList<Producto> productoList;
     private OnItemClickListener mListener;
-    //for Proce Format
+    //for Price Format
     private NumberFormat formatter = new DecimalFormat("#,###");
 
     /* interface for onclick on product in recyclerView */

@@ -131,101 +131,202 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fillViewport="true"
+            android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RadioGroup
+                android:id="@+id/categoriasRadioGroup"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/accVehiculos"
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/todos"
+                    style="@style/MiRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cosa 1"
-                    android:onClick="deselectAllButtonsMenos"
-                    android:textColor="@color/grey_40"
-                    android:textAllCaps="false"
-                    android:background="@drawable/redondeadobtncategoria"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:checked="true"
+                    android:text="Todos" />
 
-                <Button
-                    android:id="@+id/animales"
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/uno"
+                    style="@style/MiRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Button"
-                    android:onClick="deselectAllButtonsMenos"
-                    android:textColor="@color/grey_40"
-                    android:textAllCaps="false"
-                    android:background="@drawable/redondeadobtncategoria"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/accVehiculos"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Accesorios Vehiculos" />
 
-                <Button
-                    android:id="@+id/antiguedades"
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/dos"
+                    style="@style/MiRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Button"
-                    android:onClick="deselectAllButtonsMenos"
-                    android:textColor="@color/grey_40"
-                    android:textAllCaps="false"
-                    android:background="@drawable/redondeadobtncategoria"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/animales"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Animales" />
 
-                <Button
-                    android:id="@+id/artesanias"
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/tres"
+                    style="@style/MiRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Button"
-                    android:onClick="deselectAllButtonsMenos"
-                    android:textColor="@color/grey_40"
-                    android:textAllCaps="false"
-                    android:background="@drawable/redondeadobtncategoria"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/antiguedades"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Antiguedades" />
 
-                <Button
-                    android:id="@+id/boton6"
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/cuatro"
+                    style="@style/MiRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Button"
-                    android:onClick="deselectAllButtonsMenos"
-                    android:textColor="@color/grey_40"
-                    android:textAllCaps="false"
-                    android:background="@drawable/redondeadobtncategoria"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/artesanias"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Artesanias" />
 
-                <Button
-                    android:id="@+id/boton7"
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/cinco"
+                    style="@style/MiRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Button"
-                    android:onClick="deselectAllButtonsMenos"
-                    android:textColor="@color/grey_40"
-                    android:textAllCaps="false"
-                    android:background="@drawable/redondeadobtncategoria"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/boton6"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Automotores" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/seis"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Bebés" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/siete"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Celulares" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/ocho"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Hobbies" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/nueve"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Computación" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/diez"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Video Juegos" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/once"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Cámaras" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/doce"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Delicatessen" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/trece"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Deportes" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/catorce"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Electrodomésticos" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/quince"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Electrónica" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/dieciseis"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Eventos" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/diecisiete"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Hogar y jardin" />
+
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/dieciocho"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Industrias" />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.rodrigomiragaya.meliandroidcandidate.CustomeRadioButon
+                    android:id="@+id/diecinueve"
+                    style="@style/MiRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Inmuebles" />
 
+
+            </RadioGroup>
 
         </HorizontalScrollView>
 

@@ -18,5 +18,14 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
+    <style name="MiRadioButton" parent="@android:style/TextAppearance">
+        <item name="android:paddingStart">6dp</item>
+        <item name="android:paddingEnd">6dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/selectable_text_color_checked_state</item>
+        <item name="android:background">@drawable/selectable_text_bg_color_checked_state</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 
 </resources>

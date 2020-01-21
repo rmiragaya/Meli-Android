@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -17,9 +16,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,11 +48,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
     private MainActivityVM mainActivityVM;
 
     /* Buttons List */
-    private Button accVehiculos, animales, antiguedades, artesanias, automotores, bebes,
-            celulares, hobbies, computacion, consolas, camaras, delicatesen,
-            deportes, electrodomesticos, electronica, eventos, hogarJardin,
-            oficinas, inmuebles;
-    private ArrayList<Button> listaBtn = new ArrayList<>();
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
         buscarBtn = findViewById(R.id.buscarBtnId);
         carro = findViewById(R.id.carroBtn);
         buscarEditText = findViewById(R.id.busquedaEditTextId);
+        radioGroup = findViewById(R.id.categoriasRadioGroup);
 
         /* Observable List */
         mainActivityVM = ViewModelProviders.of(this).get(MainActivityVM.class);
@@ -122,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
             }
         });
 
-
         initRecycler();
 
         /* Carro de compras */
@@ -133,19 +130,84 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
                 startActivity(intent);
             }
         });
-
-        viewsOnButtons();
-        addButtonsOnList();
     }
 
+    /* Check wich radiobutton is selectecd, get name and return Category Code */
     private String getCategoria(){
-        return "MLA1367";
+        int radioId = radioGroup.getCheckedRadioButtonId();
+        radioButton = findViewById(radioId);
+
+        String categoria;
+        switch (radioButton.getText().toString().toLowerCase()){
+
+            case "accesorios vehiculos":
+                categoria = "MLA5725";
+                break;
+            case "animales":
+                categoria = "MLA1071";
+                break;
+            case "antiguedades":
+                categoria = "MLA1367";
+                break;
+            case "artesanias":
+                categoria = "MLA1368";
+                break;
+            case "automotores":
+                categoria = "MLA1743";
+                break;
+            case "bebés":
+                categoria = "MLA1384";
+                break;
+            case "celulares":
+                categoria = "MLA1051";
+                break;
+            case "hobbies":
+                categoria = "MLA1798";
+                break;
+            case "computación":
+                categoria = "MLA1648";
+                break;
+            case "video juegos":
+                categoria = "MLA1144";
+                break;
+            case "cámaras":
+                categoria = "MLA1039";
+                break;
+            case "delicatessen":
+                categoria = "MLA1403";
+                break;
+            case "deportes":
+                categoria = "MLA1276";
+                break;
+            case "electrodomésticos":
+                categoria = "MLA5726";
+                break;
+            case "electrónica":
+                categoria = "MLA1000";
+                break;
+            case "eventos":
+                categoria = "MLA2547";
+                break;
+            case "hogar y jardin":
+                categoria = "MLA1574";
+                break;
+            case "industrias":
+                categoria = "MLA1499";
+                break;
+            case "inmuebles":
+                categoria = "MLA1459";
+                break;
+            default:
+                categoria = "";
+        }
+
+        Log.d(TAG, "getCategoria return " + categoria);
+        return categoria;
     }
 
     private boolean busquedaVacia(){
-        return  (buscarEditText.getText().toString().equalsIgnoreCase(""));
+        return (buscarEditText.getText().toString().equalsIgnoreCase(""));
     }
-
 
     /* Show Lottie when no results "https://github.com/airbnb/lottie-android" */
     private void showLottieSinResultados(){
@@ -200,39 +262,5 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
         startActivity(detalleProductoIntent);
     }
 
-    public void deselectAllButtonsMenos(View view){
-        for (Button b : listaBtn){
-            if (b.getId() == view.getId()){
-                return;
-            }
-            if (b.isSelected()){
-                marcarCategoria(b);
-            }
-        }
-        view.setSelected(true);
-    }
 
-    public void marcarCategoria(View view) {
-        if (view instanceof Button) {
-            Button b = (Button) view;
-            if (b.isSelected()) {
-                b.setTextColor(getResources().getColor(R.color.grey_40));
-            } else {
-                b.setTextColor(Color.WHITE);
-            }
-            b.setSelected(!b.isSelected());
-        }
-    }
-
-    private void viewsOnButtons(){
-        accVehiculos = findViewById(R.id.accVehiculos);animales = findViewById(R.id.animales);antiguedades = findViewById(R.id.antiguedades);artesanias = findViewById(R.id.artesanias);
-    }
-
-    private void addButtonsOnList(){
-        listaBtn.add(accVehiculos);
-        listaBtn.add(animales);listaBtn.add(antiguedades);listaBtn.add(artesanias);
-//        listaBtn.add(automotores);listaBtn.add(bebes);
-//        listaBtn.add(celulares);listaBtn.add(hobbies);listaBtn.add(computacion);listaBtn.add(consolas);listaBtn.add(camaras);listaBtn.add(delicatesen);
-//        listaBtn.add(deportes);listaBtn.add(electrodomesticos);listaBtn.add(electronica);listaBtn.add(eventos);listaBtn.add(hogarJardin);listaBtn.add(oficinas);listaBtn.add(inmuebles);
-    }
 }

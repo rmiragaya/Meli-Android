@@ -15,6 +15,9 @@ import com.rodrigomiragaya.meliandroidcandidate.Obj.Producto;
 import com.rodrigomiragaya.meliandroidcandidate.Singl.CarroComprasSingleton;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import static com.rodrigomiragaya.meliandroidcandidate.MainActivity.DETALLE_PRODUCTO;
 
 
@@ -25,6 +28,8 @@ public class DetallesProducto extends AppCompatActivity {
     private Producto producto;
     private FloatingActionButton addProducto;
     private CarroComprasSingleton carroComprasSingleton = CarroComprasSingleton.getInstance();
+    //for Price Format
+    private NumberFormat formatter = new DecimalFormat("#,###");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +47,15 @@ public class DetallesProducto extends AppCompatActivity {
 
         precio = findViewById(R.id.precioDetalleProducto);
         int b = Math.round(producto.getPrecio());
-        precio.setText("$ " + b);
+        String numberPriceFormat = formatter.format(b);
+        precio.setText("$ " + numberPriceFormat);
+
 
         state = findViewById(R.id.stateDetalleProducto);
         state.setText(producto.getVendorAddres().getProvincia() + "\n" + producto.getVendorAddres().getCiudadOBarrio());
 
         descripcionProducto = findViewById(R.id.descripcionProductoId);
+
         //como no tengo acceso a la descripcion del producto, la creo yo
         descripcionProducto.setText(getResources().getString(R.string.descripcion_producto));
 
